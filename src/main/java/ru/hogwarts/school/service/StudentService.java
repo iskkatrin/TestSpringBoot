@@ -15,7 +15,9 @@ public class StudentService {
         students = new HashMap<>();
         idCounter = 0;
     }
-
+    public Student getStudentById(long id) {
+        return students.get(id);
+    }
     public Student createStudent(String name, int age) {
         long id = idCounter++;
         Student student = new Student(id, name, age);
@@ -23,9 +25,6 @@ public class StudentService {
         return student;
     }
 
-    public Student getStudentById(long id) {
-        return students.get(id);
-    }
 
     public void updateStudent(Student student, String name, int age) {
         student.setName(name);
