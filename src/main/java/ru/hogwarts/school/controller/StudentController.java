@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.*;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.service.StudentService;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/student")
 public class StudentController {
@@ -18,22 +20,30 @@ public class StudentController {
         Student student = studentService.getStudentById(id);
         return new ResponseEntity<>(student, HttpStatus.OK);
     }
+
     @PostMapping("/")
-    public ResponseEntity<Student> createStudent(@RequestBody Student student) {
-        Student createStudent = studentService.getStudentById(id);
+    public ResponseEntity<Student> createStudent(@RequestParam String name, @RequestParam int age) {
+        Student createStudent = studentService.createStudent(name, age);
         return new ResponseEntity<>(createStudent, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Student> updateStudent(@PathVariable int id, @RequestBody Student student) {
-        Student updatedStudent = studentService.updateStudent(id, student);
-        return new ResponseEntity<>(updatedStudent, HttpStatus.OK);
+    public ResponseEntity<Student> updateStudent(@PathVariable long id, @RequestParam String name, @RequestParam int age) {
+        Student student = studentService.getStudentById(id);
+        studentService.updateStudent(student, name, age);
+        return new ResponseEntity<>(student, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteFaculty(@PathVariable int id) {
-        studentService.deleteStudent(id);
+    public ResponseEntity<String> deleteFaculty(@PathVariable long id) {
+        Student student = studentService.getStudentById(id);
+        studentService.deleteStudent(student);
         return new ResponseEntity<>("Faculty deleted successfully", HttpStatus.OK);
+    }
+
+    @GetMapping("/age/{age}")
+    public List<Student> getStudentsByAge(@PathVariable int age) {
+        return studentService.getStudentsByAge(age);
     }
 }
 
