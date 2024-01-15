@@ -45,4 +45,5 @@ public class FacultyController {
     public List<Faculty> getFacultyByColor(@PathVariable String color) {
         return facultyService.getFacultyByColor(color);
     }
+
 }
