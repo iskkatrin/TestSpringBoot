@@ -14,30 +14,28 @@ import java.util.List;
 public class FacultyController {
     @Autowired
     private FacultyService facultyService;
+    @Autowired
+    private Faculty faculty;
 
     @GetMapping ("/{id}")
     public ResponseEntity<Faculty> getFaculty(@PathVariable long id) {
-        Faculty faculty = facultyService.getFacultyById(id);
         return new ResponseEntity<>(faculty, HttpStatus.OK);
     }
 
     @PostMapping("/")
     public ResponseEntity<Faculty> createFaculty(@RequestParam String name, @RequestParam String color) {
-        Faculty createdFaculty = facultyService.createFaculty(name, color);
-        return new ResponseEntity<>(createdFaculty, HttpStatus.CREATED);
+        return new ResponseEntity<>(faculty, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Faculty> updateFaculty(@PathVariable long id, @RequestParam String name, @RequestParam String color) {
-        Faculty faculty = facultyService.getFacultyById(id);
-        facultyService.updateFaculty(faculty, name, color);
+        facultyService.updateFaculty(name, color);
         return new ResponseEntity<>(faculty, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteFaculty(@PathVariable long id) {
-        Faculty faculty = facultyService.getFacultyById(id);
-        facultyService.deleteFaculty(faculty);
+        facultyService.deleteFaculty(id);
         return new ResponseEntity<>("Faculty deleted successfully", HttpStatus.OK);
     }
 
