@@ -1,9 +1,9 @@
 package ru.hogwarts.school.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
 import org.springframework.data.annotation.Id;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import java.util.Objects;
 
 @Entity
@@ -13,7 +13,6 @@ public class Student {
     private Long id;
     private String name;
     private int age;
-
     public Student(Long id, String name, int age) {
         this.id = id;
         this.name = name;
