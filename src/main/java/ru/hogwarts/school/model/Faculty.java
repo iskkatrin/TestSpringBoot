@@ -8,16 +8,22 @@ import java.util.Objects;
 
 @Entity
 public class Faculty {
+
     @Id
     @GeneratedValue
     private Long id;
     private String name;
     private String color;
 
-    public Faculty(String name, String color) {
+    public Faculty(String name, String color,Long id ) {
         this.name = name;
         this.color = color;
+        this.id = id;
     }
+
+    public Faculty() {
+    }
+
 
     public Long getId() {
         return id;
