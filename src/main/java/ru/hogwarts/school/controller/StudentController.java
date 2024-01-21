@@ -14,22 +14,20 @@ import java.util.List;
 public class StudentController {
     @Autowired
     private StudentService studentService;
-    @Autowired
-    private Student student;
 
     @GetMapping
     public ResponseEntity<Student> getStudent(@PathVariable int id) {
-        return new ResponseEntity<>(student, HttpStatus.OK);
+        return new ResponseEntity<>(new Student(), HttpStatus.OK);
     }
 
     @PostMapping("/")
     public ResponseEntity<Student> createStudent(@RequestParam String name, @RequestParam int age) {
-        return new ResponseEntity<>(student, HttpStatus.CREATED);
+        return new ResponseEntity<>(new Student(), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Student> updateStudent(@PathVariable long id, @RequestParam String name, @RequestParam int age) {
-        return new ResponseEntity<>(student, HttpStatus.OK);
+        return new ResponseEntity<>(new Student(), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")

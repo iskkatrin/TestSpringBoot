@@ -23,6 +23,8 @@ public class StudentService {
 
     public Student createStudent(String name, int age) {
         Student student = new Student();
+        student.setName(name);
+        student.setAge(age);
         return studentRepository.save(student);
     }
 
