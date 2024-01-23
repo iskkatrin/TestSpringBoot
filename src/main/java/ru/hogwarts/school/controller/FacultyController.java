@@ -16,7 +16,7 @@ public class FacultyController {
     private FacultyService facultyService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<Faculty> getFaculty(@PathVariable long id) {
+    public ResponseEntity<Faculty> getFaculty(@PathVariable Long id) {
         Faculty faculty = facultyService.getFacultyById(id);
         return new ResponseEntity<>(faculty, HttpStatus.OK);
     }

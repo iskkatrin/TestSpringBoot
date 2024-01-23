@@ -28,12 +28,12 @@ public class StudentService {
         return studentRepository.save(student);
     }
 
-
-    public void updateStudent(String name, int age) {
+    public Student updateStudent(Long id, String name, int age) {
         Student student = new Student();
         student.setName(name);
         student.setAge(age);
         studentRepository.save(student);
+        return student;
     }
 
     public void deleteStudent(long id) {

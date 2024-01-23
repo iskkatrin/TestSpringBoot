@@ -17,21 +17,25 @@ public class StudentController {
 
     @GetMapping
     public ResponseEntity<Student> getStudent(@PathVariable int id) {
+        Student student = studentService.getStudentById(id);
         return new ResponseEntity<>(new Student(), HttpStatus.OK);
     }
 
     @PostMapping("/")
     public ResponseEntity<Student> createStudent(@RequestParam String name, @RequestParam int age) {
-        return new ResponseEntity<>(new Student(), HttpStatus.CREATED);
+        Student student = studentService.createStudent(name, age);
+        return ResponseEntity.status(HttpStatus.CREATED).body(student);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Student> updateStudent(@PathVariable long id, @RequestParam String name, @RequestParam int age) {
+    public ResponseEntity<Student> updateStudent(@PathVariable Long id, @RequestParam String name, @RequestParam int age) {
+        Student student = studentService.updateStudent(id, name, age);
         return new ResponseEntity<>(new Student(), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteFaculty(@PathVariable long id) {
+    public ResponseEntity<String> deleteStudent(@PathVariable Long id) {
+        studentService.deleteStudent(id);
         return new ResponseEntity<>("Faculty deleted successfully", HttpStatus.OK);
     }
 
