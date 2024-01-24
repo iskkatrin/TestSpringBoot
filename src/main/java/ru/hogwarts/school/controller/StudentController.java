@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.service.StudentService;
 
@@ -21,16 +22,16 @@ public class StudentController {
         return new ResponseEntity<>(new Student(), HttpStatus.OK);
     }
 
-    @PostMapping("/")
+    @PostMapping
     public ResponseEntity<Student> createStudent(@RequestParam String name, @RequestParam int age) {
         Student student = studentService.createStudent(name, age);
-        return ResponseEntity.status(HttpStatus.CREATED).body(student);
+        return new ResponseEntity<>(student, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Student> updateStudent(@PathVariable Long id, @RequestParam String name, @RequestParam int age) {
         Student student = studentService.updateStudent(id, name, age);
-        return new ResponseEntity<>(new Student(), HttpStatus.OK);
+        return new ResponseEntity<>(student, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")

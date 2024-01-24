@@ -22,3 +22,17 @@ Content-Type: application/x-www-form-urlencoded
 name = Katy &
 age = 22
 
+### create student
+POST http://localhost:8080/student/
+Content-Type: application/x-www-form-urlencoded
+
+name = Mary &
+age = 20
+
+### create student
+POST http://localhost:8080/student/
+Content-Type: application/x-www-form-urlencoded
+
+name = Alex &
+age = 26
+

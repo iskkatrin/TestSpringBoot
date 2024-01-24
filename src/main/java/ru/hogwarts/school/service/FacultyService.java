@@ -2,15 +2,20 @@ package ru.hogwarts.school.service;
 
 import org.springframework.data.jpa.domain.AbstractPersistable_;
 import org.springframework.stereotype.Service;
+import ru.hogwarts.school.exception.StudentNotFoundException;
 import ru.hogwarts.school.model.Faculty;
+import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.FacultyRepository;
 
 import java.util.List;
+
+import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 
 @Service
 public class FacultyService {
 
     private final FacultyRepository facultyRepository;
+
     public FacultyService(FacultyRepository facultyRepository) {
         this.facultyRepository = facultyRepository;
     }
@@ -41,5 +46,7 @@ public class FacultyService {
     public List<Faculty> getFacultyByColor(String color) {
         return facultyRepository.findByColor(color);
     }
+
 }
+
 
