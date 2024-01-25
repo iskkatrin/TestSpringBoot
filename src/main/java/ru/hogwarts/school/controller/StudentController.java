@@ -10,6 +10,8 @@ import ru.hogwarts.school.service.StudentService;
 
 import java.util.List;
 
+import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
+
 @RestController
 @RequestMapping("/student")
 public class StudentController {
@@ -43,6 +45,11 @@ public class StudentController {
     @GetMapping("/age/{age}")
     public List<Student> getStudentsByAge(@PathVariable int age) {
         return studentService.getStudentsByAge(age);
+    }
+
+    @GetMapping("/{id}")
+    public Faculty getFacultyByStudentId(@PathVariable Long Id) {
+        return studentService.getFacultyByStudentId(Id);
     }
 }
 

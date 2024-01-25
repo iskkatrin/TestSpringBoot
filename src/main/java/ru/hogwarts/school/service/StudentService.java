@@ -37,7 +37,7 @@ public class StudentService {
         return student;
     }
 
-    public void deleteStudent(long id) {
+    public void deleteStudent(Long id) {
         studentRepository.deleteById(id);
     }
 
@@ -45,10 +45,9 @@ public class StudentService {
         return studentRepository.getByAge(age);
     }
 
-    public Faculty getFacultyByStudentId(Long studentId) {
-        Student student = studentRepository.findById(studentId).orElseThrow(
-                () -> new StudentNotFoundException("Student not found with id: " + studentId));
-        return ;
-        
+    public Faculty getFacultyByStudentId(Long Id) {
+        Student student = studentRepository.findById(Id).orElseThrow(
+                () -> new StudentNotFoundException("Student not found with id: " + Id));
+        return student.getFaculty();
     }
 }

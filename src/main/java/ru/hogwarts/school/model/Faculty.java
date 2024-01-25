@@ -64,4 +64,8 @@ public class Faculty {
     public int hashCode() {
         return Objects.hash(getId(), getName(), getColor());
     }
+
+    public List<Student> getStudents() {
+        return students;
+    }
 }

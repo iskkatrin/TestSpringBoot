@@ -61,4 +61,8 @@ public class Student {
     public int getAge() {
         return age;
     }
+
+    public Faculty getFaculty() {
+        return faculty;
+    }
 }
