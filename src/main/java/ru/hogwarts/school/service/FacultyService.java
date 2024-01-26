@@ -48,7 +48,7 @@ public class FacultyService {
         return facultyRepository.findByColor(color);
     }
 
-    public List<Student> getStudentsByFaculty(Long Id) {
+    public List<Student> getStudentByFaculty(Long Id) {
         Faculty faculty = facultyRepository.findById(Id).orElseThrow(
                 () -> new FacultyNotFoundException("Faculty not found with id: " + Id));
         return faculty.getStudents();
