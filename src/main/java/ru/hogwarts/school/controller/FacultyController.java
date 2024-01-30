@@ -19,8 +19,8 @@ public class FacultyController {
     private FacultyService facultyService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<Faculty> getFaculty(@PathVariable Long id) {
-        Faculty faculty = facultyService.getFacultyById(id);
+    public ResponseEntity<Faculty> getFaculty(@PathVariable Long facultyId) {
+        Faculty faculty = facultyService.getFacultyById(facultyId);
         return new ResponseEntity<>(faculty, HttpStatus.OK);
     }
 
@@ -31,14 +31,14 @@ public class FacultyController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Faculty> updateFaculty(@PathVariable Long id, @RequestParam String name, @RequestParam String color) {
-        Faculty faculty = facultyService.updateFaculty(id, name, color);
+    public ResponseEntity<Faculty> updateFaculty(@PathVariable Long facultyId, @RequestParam String name, @RequestParam String color) {
+        Faculty faculty = facultyService.updateFaculty(facultyId, name, color);
         return new ResponseEntity<>(faculty, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteFaculty(@PathVariable Long id) {
-        facultyService.deleteFaculty(id);
+    public ResponseEntity<String> deleteFaculty(@PathVariable Long facultyId) {
+        facultyService.deleteFaculty(facultyId);
         return new ResponseEntity<>("Faculty deleted successfully", HttpStatus.OK);
     }
 
@@ -48,7 +48,7 @@ public class FacultyController {
     }
 
     @GetMapping("/{id}")
-    public List<Student> getStudentByFaculty(@PathVariable Long Id) {
-        return facultyService.getStudentByFaculty(Id);
+    public List<Student> getStudentByFaculty(@PathVariable Long facultyId) {
+        return facultyService.getStudentByFaculty(facultyId);
     }
 }

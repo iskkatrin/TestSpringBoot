@@ -28,31 +28,29 @@ public class FacultyService {
         return facultyRepository.save(faculty);
     }
 
-
-    public Faculty getFacultyById(long id) {
-        return facultyRepository.findById(id).get();
+    public Faculty getFacultyById(long facultyId) {
+        return facultyRepository.findById(facultyId).get();
     }
 
-    public Faculty updateFaculty(Long id, String name, String color) {
-        Faculty faculty = facultyRepository.findById(id).get();
+    public Faculty updateFaculty(Long facultyId, String name, String color) {
+        Faculty faculty = facultyRepository.findById(facultyId).get();
         faculty.setName(name);
         faculty.setColor(color);
         return facultyRepository.save(faculty);
     }
 
-    public void deleteFaculty(long id) {
-        facultyRepository.deleteById(id);
+    public void deleteFaculty(long facultyId) {
+        facultyRepository.deleteById(facultyId);
     }
 
     public List<Faculty> getFacultyByColor(String color) {
         return facultyRepository.findByColor(color);
     }
 
-    public List<Student> getStudentByFaculty(Long Id) {
-        Faculty faculty = facultyRepository.findById(Id).orElseThrow(
-                () -> new FacultyNotFoundException("Faculty not found with id: " + Id));
+    public List<Student> getStudentByFaculty(Long facultyId) {
+        Faculty faculty = facultyRepository.findById(facultyId).orElseThrow(
+                () -> new FacultyNotFoundException("Faculty not found with id: " + facultyId));
         return faculty.getStudents();
     }
 }
-
 
