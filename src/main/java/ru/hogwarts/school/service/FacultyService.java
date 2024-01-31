@@ -27,7 +27,6 @@ public class FacultyService {
         faculty.setColor(color);
         return facultyRepository.save(faculty);
     }
-
     public Faculty getFacultyById(long facultyId) {
         return facultyRepository.findById(facultyId).get();
     }
@@ -51,6 +50,7 @@ public class FacultyService {
         Faculty faculty = facultyRepository.findById(facultyId).orElseThrow(
                 () -> new FacultyNotFoundException("Faculty not found with id: " + facultyId));
         return faculty.getStudents();
+
     }
 }
 

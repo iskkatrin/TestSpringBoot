@@ -26,7 +26,6 @@ public class Avatar {
     @OneToOne
     private Student student;
 
-
     public Avatar(Long id, String filePath, String mediaType, long fileSize, Student student) {
         this.id = id;
         this.filePath = filePath;
