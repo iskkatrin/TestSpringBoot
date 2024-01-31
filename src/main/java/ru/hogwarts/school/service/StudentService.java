@@ -102,3 +102,4 @@ public class StudentService {
         return fileName.substring(fileName.lastIndexOf(".") + 1);
     }
 }
+
