@@ -70,7 +70,7 @@ public class StudentService {
     }
 
     public Avatar findAvatar(long studentId) {
-        return avatarRepository.findByStudentId(studentId).orElseThrow();
+        return avatarRepository.findByStudent_id(studentId).orElseThrow();
     }
 
     public void uploadAvatar(Long studentId, MultipartFile file) throws IOException {
@@ -88,7 +88,7 @@ public class StudentService {
             bis.transferTo(bos);
         }
 
-        Avatar avatar = avatarRepository.findByStudentId(studentId).orElseGet(Avatar::new);
+        Avatar avatar = avatarRepository.findByStudent_id(studentId).orElseGet(Avatar::new);
         avatar.setStudent(student);
         avatar.setFilePath(filePath.toString());
         avatar.setFileSize(file.getSize());

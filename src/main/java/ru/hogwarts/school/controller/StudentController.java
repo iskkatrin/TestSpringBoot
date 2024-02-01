@@ -25,8 +25,12 @@ import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 @RestController
 @RequestMapping("/student")
 public class StudentController {
-    @Autowired
-    private StudentService studentService;
+
+    private final StudentService studentService;
+
+    public StudentController(StudentService studentService) {
+        this.studentService = studentService;
+    }
 
     @GetMapping
     public ResponseEntity<Student> getStudent(@PathVariable int studentId) {
