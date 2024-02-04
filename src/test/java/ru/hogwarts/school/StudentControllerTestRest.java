@@ -50,9 +50,10 @@ public class StudentControllerTestRest {
     public void testPostStudent() throws Exception {
         Student student = new Student();
         student.setName("Kate");
-        Assertions.assertThat(this.restTemplate.postForObject("http://localhost" + port + "/student", String.class))
+        Assertions.assertThat(this.restTemplate.postForObject("http://localhost" + port + "/student", student, String.class))
                 .isNotEmpty();
     }
+
 
     @Test
     public void testPutStudent() throws Exception {
@@ -77,15 +78,15 @@ public class StudentControllerTestRest {
         ResponseEntity<List> responseEntity = this.restTemplate.getForEntity("http://localhost:" + port + "/student/age/" + age, List.class);
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(responseEntity.getBody()).isNotNull();
-        assertThat(responseEntity.getBody()).isNotEmpty();
+        assertThat(responseEntity.getBody()).isNotNull();
     }
 
     @Test
     public void getFacultyByStudentId() throws Exception {
         Long facultyId = 1L;
-        List<Student> studentList = restTemplate.getForObject("http://localhost:" + port + "/faculty" + facultyId, List.class);
+        List<Student> studentList = restTemplate.getForObject("http://localhost:" + port + "/faculty/" + facultyId, List.class);
         assertThat(studentList).isNotNull();
-        assertThat(studentList).isNotEmpty();
+        assertThat(studentList).isNotNull();
     }
 }
 

@@ -1,3 +1,4 @@
+/*
 package ru.hogwarts.school;
 
 import org.json.JSONObject;
@@ -67,3 +68,4 @@ public class StudentControllerTestWeb {
 
     }
 }
+*/

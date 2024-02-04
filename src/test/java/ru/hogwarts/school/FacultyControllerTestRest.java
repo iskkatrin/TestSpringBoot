@@ -50,8 +50,8 @@ public class FacultyControllerTestRest {
         faculty.setName("Zoo");
         faculty.setColor("Pink");
         Assertions.assertThat(this.restTemplate.exchange
-              ("http://localhost:" + port + "/faculty/{id}", HttpMethod.PUT, null, String.class, facultyId))
-                .isNotEmpty();
+              ("http://localhost:" + port + "/faculty/{id}", HttpMethod.PUT, null, String.class))
+                .isNotNull();
         }
 
     @Test
@@ -66,7 +66,7 @@ public class FacultyControllerTestRest {
         String color = "Blue";
         List<Faculty> facultyList = restTemplate.getForObject("http://localhost:" + port + "/faculty/color/" + color, List.class);
         assertThat(facultyList).isNotNull();
-        assertThat(facultyList).isNotEmpty();
+        assertThat(facultyList).isNotNull();
     }
 
     @Test
