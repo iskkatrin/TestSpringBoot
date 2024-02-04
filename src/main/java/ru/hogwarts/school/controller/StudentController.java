@@ -1,6 +1,5 @@
 package ru.hogwarts.school.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -20,7 +19,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
-import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 
 @RestController
 @RequestMapping("/student")
@@ -37,6 +35,7 @@ public class StudentController {
         Student student = studentService.getStudentById(studentId);
         return new ResponseEntity<>(new Student(), HttpStatus.OK);
     }
+
 
     @PostMapping
     public ResponseEntity<Student> createStudent(@RequestParam String name, @RequestParam int age) {

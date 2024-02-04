@@ -83,8 +83,8 @@ public class StudentControllerTestRest {
 
     @Test
     public void getFacultyByStudentId() throws Exception {
-        Long facultyId = 1L;
-        List<Student> studentList = restTemplate.getForObject("http://localhost:" + port + "/faculty/" + facultyId, List.class);
+        Long studentId = 1L;
+        List<Student> studentList = restTemplate.getForObject("http://localhost:" + port + "/faculty/" + studentId, List.class);
         assertThat(studentList).isNotNull();
         assertThat(studentList).isNotNull();
     }
