@@ -97,7 +97,6 @@ public class StudentService {
 
         avatarRepository.save(avatar);
     }
-
     private String getExtension(String fileName) {
         return fileName.substring(fileName.lastIndexOf(".") + 1);
     }
