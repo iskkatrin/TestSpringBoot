@@ -70,7 +70,8 @@ public class FacultyControllerTestWeb {
         faculty.setName("Faculty");
         faculty.setColor("Red");
 
-        when(facultyService.createFaculty().thenReturn(faculty);
+        when(facultyService.createFaculty("Faculty", "Red")).thenReturn(faculty);
+
 
         mockMvc.perform(MockMvcRequestBuilders.post("/faculty")
                         .param("name", "Faculty")
@@ -88,7 +89,8 @@ public class FacultyControllerTestWeb {
         faculty.setName("Faculty");
         faculty.setColor("Red");
 
-        when(facultyService.updateFaculty().thenReturn(faculty);
+        when(facultyService.updateFaculty(1L, "Faculty", "Red")).thenReturn(faculty);
+
 
         mockMvc.perform(MockMvcRequestBuilders.put("/faculty/1")
                         .param("name", "Faculty")
