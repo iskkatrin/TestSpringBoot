@@ -16,6 +16,9 @@ import ru.hogwarts.school.repository.StudentRepository;
 import ru.hogwarts.school.service.FacultyService;
 import ru.hogwarts.school.service.StudentService;
 
+import java.util.Optional;
+
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -49,7 +52,7 @@ public class StudentControllerTestWeb {
         student.setName("John");
         student.setAge(20);
 
-        when(studentService.getStudentById(1)).thenReturn(student);
+        when(studentRepository.findById(any(Long.class))).thenReturn(Optional.of(student));
 
         mockMvc.perform(MockMvcRequestBuilders
                  .get("/student", 1)
@@ -59,5 +62,10 @@ public class StudentControllerTestWeb {
                 .andExpect(jsonPath("$.studentId").value(1))
                 .andExpect(jsonPath("$.name").value("John"))
                 .andExpect(jsonPath("$.age").value(20));
+    }
+
+    @Test
+    public void testGetFacultyByStudentId() throws Exception {
+
     }
 }

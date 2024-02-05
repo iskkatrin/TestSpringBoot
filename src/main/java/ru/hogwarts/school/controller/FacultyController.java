@@ -40,6 +40,7 @@ public class FacultyController {
     public ResponseEntity<String> deleteFaculty(@PathVariable Long facultyId) {
         facultyService.deleteFaculty(facultyId);
         return new ResponseEntity<>("Faculty deleted successfully", HttpStatus.OK);
+
     }
 
     @GetMapping("/color/{color}")
