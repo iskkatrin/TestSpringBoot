@@ -28,7 +28,7 @@ public class FacultyService {
         return facultyRepository.save(faculty);
     }
     public Faculty getFacultyById(long facultyId) {
-        return facultyRepository.findById(facultyId).get();
+        return facultyRepository.findById(facultyId).orElse(null);
     }
 
     public Faculty updateFaculty(Long facultyId, String name, String color) {
@@ -50,6 +50,7 @@ public class FacultyService {
         Faculty faculty = facultyRepository.findById(facultyId).orElseThrow(
                 () -> new FacultyNotFoundException("Faculty not found with id: " + facultyId));
         return faculty.getStudents();
+
 
     }
 }

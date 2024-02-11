@@ -7,15 +7,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import ru.hogwarts.school.controller.FacultyController;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 
@@ -30,18 +35,30 @@ public class FacultyControllerTestRest {
     private TestRestTemplate restTemplate;
 
     @Test
-    public void testGetMessage() throws Exception {
-        Assertions.assertThat(this.restTemplate.getForObject("http://localhost" + port + "/faculty", String.class))
-                .isNotEmpty();
-    }
+    public void testGetFaculty() throws Exception {
+        Faculty faculty = new Faculty();
+        faculty.setFacultyId(1L);
+        faculty.setName("Nikki");
+        faculty.setColor("Green");
 
-    @Test
+        Faculty actual = this.restTemplate.getForObject(
+                "http://localhost:" + port +"/faculty/{facultyId}", Faculty.class, faculty.getFacultyId());
+
+        Assertions.assertThat(actual.getFacultyId()).isEqualTo(faculty.getFacultyId());
+        Assertions.assertThat(actual.getName()).isEqualTo(faculty.getName());
+        Assertions.assertThat(actual.getColor()).isEqualTo(faculty.getColor());
+}
+
+@Test
     public void testPostFaculty() throws Exception {
         Faculty faculty = new Faculty();
         faculty.setName("Zoo");
         faculty.setColor("Pink");
-        Assertions.assertThat(this.restTemplate.postForObject("http://localhost:" + port + "/faculty", faculty, String.class))
-                .isNotEmpty();
+        Faculty actual = this.restTemplate.postForObject("http://localhost:" + port + "/faculty", faculty, Faculty.class);
+
+        Assertions.assertThat(actual.getFacultyId()).isNotNull();
+        Assertions.assertThat(actual.getName()).isEqualTo("Zoo");
+        Assertions.assertThat(actual.getColor()).isEqualTo("Pink");
     }
 
     @Test
@@ -49,30 +66,65 @@ public class FacultyControllerTestRest {
         Faculty faculty = new Faculty();
         faculty.setName("Zoo");
         faculty.setColor("Pink");
-        Assertions.assertThat(this.restTemplate.exchange
-              ("http://localhost:" + port + "/faculty/{id}", HttpMethod.PUT, null, String.class))
-                .isNotNull();
+        Faculty actual = this.restTemplate.postForObject("http://localhost:" + port + "/faculty", faculty, Faculty.class);
+        actual.setName("Cat");
+        actual.setColor("Red");
+      ResponseEntity <Faculty> updated = this.restTemplate.exchange
+              ("http://localhost:" + port + "/faculty/" + actual.getFacultyId(), HttpMethod.PUT, new HttpEntity<>(actual), Faculty.class);
+        Assertions.assertThat(updated.getBody().getFacultyId()).isNotNull();
+        Assertions.assertThat(updated.getBody().getName()).isEqualTo("Cat");
+        Assertions.assertThat(updated.getBody().getColor()).isEqualTo("Red");
         }
 
     @Test
     public void testDeleteFaculty() throws Exception {
-        Long facultyId = 1L;
-        ResponseEntity<String> response = restTemplate.exchange
-                ("http://localhost:" + port + "/faculty/" + facultyId, HttpMethod.DELETE, null, String.class);
+        Faculty faculty = new Faculty();
+        faculty.setName("Zoo");
+        faculty.setColor("Pink");
+        Faculty actual = this.restTemplate.postForObject("http://localhost:" + port + "/faculty", faculty, Faculty.class);
+        ResponseEntity <String> response = restTemplate.exchange
+                ("http://localhost:" + port + "/faculty/" + actual.getFacultyId(), HttpMethod.DELETE, null, String.class);
+        Faculty f = restTemplate.getForObject("http://localhost:" + port + "/faculty/" +
+                actual.getFacultyId(), Faculty.class);
+        Assertions.assertThat(f).isNull();
     }
 
     @Test
-    public void TestGetFacultyByColor() throws Exception {
-        String color = "Blue";
-        List<Faculty> facultyList = restTemplate.getForObject("http://localhost:" + port + "/faculty/color/" + color, List.class);
-        assertThat(facultyList).isNotNull();
-        assertThat(facultyList).isNotNull();
+    public void testGetFacultyByColor() {
+
+        String color = "Green";
+        List <Faculty> expectedFaculties = new ArrayList<>();
+
+        expectedFaculties.add(new Faculty(1, "Fenix", color));
+        ResponseEntity<List<Faculty>> response = restTemplate.exchange(
+                "http://localhost:" + port + "/faculty/color/{color}",
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<List<Faculty>>() {},
+                color);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+
+        List<Faculty> actualFaculties = response.getBody();
+        assertThat(actualFaculties).isEqualTo(expectedFaculties);
     }
 
     @Test
-    public void getStudentByFaculty() throws Exception {
+    public void testGetStudentByFaculty() {
         Long facultyId = 1L;
-        List<Student> studentList = restTemplate.getForObject("http://localhost:" + port + "/faculty/" + facultyId, List.class);
-        assertThat(studentList).isNotNull();
+        List <Student> expectedStudents = new ArrayList<>();
+        expectedStudents.add(new Student(1L, "John", 1));
+
+        ResponseEntity<List<Student>> response = restTemplate.exchange(
+                "http://localhost:" + port + "/faculty/{id}/students",
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<List<Student>>() {},
+                facultyId);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+
+        List<Student> actualStudents = response.getBody();
+        assertThat(actualStudents).isEqualTo(expectedStudents);
     }
 }

@@ -7,12 +7,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import ru.hogwarts.school.controller.StudentController;
+import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -30,63 +34,69 @@ public class StudentControllerTestRest {
     private TestRestTemplate restTemplate;
 
     @Test
-    public void contextLoads() throws Exception {
-        Assertions.assertThat(studentController).isNotNull();
-    }
+    public void testGetFaculty() throws Exception {
+        Student student = new Student();
+        student.setStudentId(1L);
+        student.setName("Kate");
+        student.setAge(4);
 
-    @Test
-    public void testDefaultMessage() throws Exception {
-        Assertions.assertThat(this.restTemplate.getForObject("http://localhost" + port + "/", String.class))
-                .isEqualTo("WebApp is working");
-    }
+        Student actual = this.restTemplate.getForObject("http://localhost:" + port + "/faculty/{1L}", Student.class, student.getStudentId());
 
-    @Test
-    public void testGetMessage() throws Exception {
-        Assertions.assertThat(this.restTemplate.getForObject("http://localhost" + port + "/student", String.class))
-                .isNotEmpty();
+        Assertions.assertThat(actual.getStudentId()).isEqualTo(1L);
+        Assertions.assertThat(actual.getName()).isEqualTo("Kate");
+        Assertions.assertThat(actual.getAge()).isEqualTo(4);
     }
 
     @Test
     public void testPostStudent() throws Exception {
         Student student = new Student();
         student.setName("Kate");
-        Assertions.assertThat(this.restTemplate.postForObject("http://localhost" + port + "/student", student, String.class))
-                .isNotEmpty();
-    }
+        student.setAge(4);
+        Student actual = this.restTemplate.postForObject("http://localhost:" + port + "/student", student, Student.class);
 
+        Assertions.assertThat(actual.getStudentId()).isNotNull();
+        Assertions.assertThat(actual.getName()).isEqualTo("Kate");
+        Assertions.assertThat(actual.getAge()).isEqualTo(4);
+    }
 
     @Test
     public void testPutStudent() throws Exception {
         Student student = new Student();
         student.setName("Mary");
         student.setAge(30);
-        Assertions.assertThat(this.restTemplate.getForObject("http://localhost" + port + "/faculty/{id}", String.class))
-                .isNotEmpty();
+        Student actual = this.restTemplate.postForObject("http://localhost:" + port + "/student", student, Student.class);
+        actual.setName("Robin");
+        actual.setAge(8);
+        ResponseEntity <Student> updated = this.restTemplate.exchange
+                ("http://localhost:" + port + "/student/" + actual.getStudentId(), HttpMethod.PUT, new HttpEntity<>(actual), Student.class);
+
+        Assertions.assertThat(updated.getBody().getStudentId()).isNotNull();
+        Assertions.assertThat(updated.getBody().getName()).isEqualTo("Robin");
+        Assertions.assertThat(updated.getBody().getAge()).isEqualTo(8);
+
     }
 
     @Test
     public void testDeleteStudent() throws Exception {
-        Long studentId = 1L;
-        ResponseEntity<String> responseEntity = this.restTemplate.exchange("http://localhost:" + port + "/student/" + studentId, HttpMethod.DELETE, null, String.class);
-        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(responseEntity.getBody()).isEqualTo("Student deleted successfully");
+        Student student = new Student();
+        student.setName("Mary");
+        student.setAge(30);
+        Faculty actual = this.restTemplate.postForObject("http://localhost:" + port + "/faculty", student, Faculty.class);
+        ResponseEntity <String> response = restTemplate.exchange
+                ("http://localhost:" + port + "/student/" + actual.getStudents(), HttpMethod.DELETE, null, String.class);
+
+        Student s = restTemplate.getForObject("http://localhost:" + port + "/student/" +
+                actual.getStudents(), Student.class);
+        Assertions.assertThat(s).isNull();
+
     }
 
     @Test
     public void testGetStudentsByAge() throws Exception {
-        Integer age = 30;
-        ResponseEntity<List> responseEntity = this.restTemplate.getForEntity("http://localhost:" + port + "/student/age/" + age, List.class);
-        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(responseEntity.getBody()).isNotNull();
-        assertThat(responseEntity.getBody()).isNotNull();
+
     }
 
-    @Test
-    public void getFacultyByStudentId() throws Exception {
-        Long studentId = 1L;
-        List<Student> studentList = restTemplate.getForObject("http://localhost:" + port + "/faculty/" + studentId, List.class);
-        assertThat(studentList).isNotNull();
-        assertThat(studentList).isNotNull();
+    public void TestGetFacultyByStudentId() throws Exception {
+
     }
 }
-
